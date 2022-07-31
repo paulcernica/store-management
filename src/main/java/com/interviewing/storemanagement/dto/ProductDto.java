@@ -1,32 +1,22 @@
-package com.interviewing.storemanagement.entities;
+package com.interviewing.storemanagement.dto;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-@Entity
-@Table
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Product {
+@Builder
+public class ProductDto {
 
-    @Id
-    @GeneratedValue
     private Integer id;
-
-    @Basic
     private String name;
-
-    @Basic
     private String description;
-
-    @Basic
     private Double price;
-
-    @Basic
     private Integer quantity;
 
 }
