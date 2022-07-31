@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>,
         JpaSpecificationExecutor<Product> {
 
-    Product findById(String id);
+    Product findByName(String id);
 
 }
