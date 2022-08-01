@@ -1,6 +1,5 @@
 package com.interviewing.storemanagement.service;
 
-import static org.h2.util.StringUtils.isNullOrEmpty;
 import com.interviewing.storemanagement.dto.ProductDto;
 import com.interviewing.storemanagement.repository.ProductRepository;
 import com.interviewing.storemanagement.util.GenericSpecification;
@@ -15,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static org.h2.util.StringUtils.isNullOrEmpty;
 
 @Service
 @Slf4j

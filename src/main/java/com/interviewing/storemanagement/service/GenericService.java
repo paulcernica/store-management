@@ -1,7 +1,6 @@
 package com.interviewing.storemanagement.service;
 
 
-import static org.h2.util.StringUtils.isNullOrEmpty;
 import com.interviewing.storemanagement.util.GenericSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static org.h2.util.StringUtils.isNullOrEmpty;
 
 public interface GenericService {
 

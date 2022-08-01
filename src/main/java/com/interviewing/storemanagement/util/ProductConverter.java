@@ -6,10 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 public interface ProductConverter {
 
-    @Slf4j
-    final class LogHolder {
-    }
-
     default Product fromDto(ProductDto dto) {
         LogHolder.log.debug("Begin conversion from DTO to Product for {}", dto.getName());
         return Product.builder().id(dto.getId())
@@ -26,5 +22,9 @@ public interface ProductConverter {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .quantity(product.getQuantity()).build();
+    }
+
+    @Slf4j
+    final class LogHolder {
     }
 }
