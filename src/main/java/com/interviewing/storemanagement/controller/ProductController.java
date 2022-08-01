@@ -27,16 +27,10 @@ public class ProductController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDto> findOneEntryById(@PathVariable @NotNull Integer id) {
-        log.info("Start fetching informations about the product with the id {}", id);
+        log.info("Start fetching information about the product with the id {}", id);
         return productService.getOneEntryById(id);
     }
 
-    /**
-     *
-     * @param productDto
-     * @param id
-     * @return
-     */
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> update(@RequestBody @Valid ProductDto productDto, @PathVariable @NotNull Integer id) {
         log.info("Update product details with the id {}", id);

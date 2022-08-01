@@ -31,12 +31,6 @@ public interface GenericService {
         return pageRequest;
     }
 
-    default ResponseEntity withHeader(List body) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(body.size()));
-        return ResponseEntity.ok().headers(headers).body(body);
-    }
-
     default Specification withSpecification(LinkedHashMap<String, GenericSpecification> params) {
         Specification specification = null;
         if (params.isEmpty()) {
@@ -48,5 +42,11 @@ public interface GenericService {
             specification = specification.and(value);
         }
         return specification;
+    }
+
+    default ResponseEntity withHeader(List body) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(body.size()));
+        return ResponseEntity.ok().headers(headers).body(body);
     }
 }

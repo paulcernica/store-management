@@ -23,6 +23,12 @@ public class ProductService implements ProductConverter, GenericService {
     @Autowired
     private ProductRepository productRepository;
 
+    /**
+     * Used to insert a Product in databasse.
+     *
+     * @param productDto DTO containing the product information
+     * @return http response which include header/body/status
+     */
     public ResponseEntity<?> save(ProductDto productDto) {
         log.debug("Starting inserting a new product with name {}.", productDto.getName());
         try {
@@ -33,6 +39,12 @@ public class ProductService implements ProductConverter, GenericService {
         }
     }
 
+    /**
+     * Used to fetch one product from database by a given id.
+     *
+     * @param id Database id of the product we want to fetch
+     * @return http response which include header/body/status
+     */
     public ResponseEntity<ProductDto> getOneEntryById(Integer id) {
         try {
             return ResponseEntity.ok(toDto(
@@ -43,6 +55,12 @@ public class ProductService implements ProductConverter, GenericService {
         }
     }
 
+    /**
+     * Used to delete one product from database by a given id.
+     *
+     * @param id Database id of the product we want to delete
+     * @return http response which include header/body/status
+     */
     public ResponseEntity<ProductDto> delete(Integer id) {
         log.debug("Delete product with the id {}", id);
         try {
@@ -54,6 +72,12 @@ public class ProductService implements ProductConverter, GenericService {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Used to update a product from database by a given id.
+     * @param productDto DTO containing the product new informations we want to update
+     * @param id Database id of the product we want to update
+     * @return http response which include header/body/status
+     */
     public ResponseEntity<Object> update(ProductDto productDto, Integer id) {
         log.debug("Update product details with the id {}", id);
         if (productRepository.findById(id).orElse(null) == null) {
@@ -67,6 +91,17 @@ public class ProductService implements ProductConverter, GenericService {
         }
     }
 
+    /**
+     * Fetch a list of products based on a search criteria. We also give pagination and sort capability.
+     *
+     * @param name search by name.
+     * @param description search by description.
+     * @param end index of last element of the page
+     * @param start index of first element of the page
+     * @param order sort type, can be either 'ASC' or 'DESC', serve as a check if we want to sort or not too
+     * @param sort sort criteria, contains the field type we want to sort by
+     * @return
+     */
     public ResponseEntity<List<ProductDto>> search(
             String name, String description, int end, int start, String order, String sort) {
 

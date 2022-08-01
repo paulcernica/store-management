@@ -22,6 +22,7 @@ public class BasicAuthWebSecurityConfiguration
                 .authorizeRequests()
                 .antMatchers(HttpMethod.DELETE, "/product/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/product").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/product/*").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         return http.build();

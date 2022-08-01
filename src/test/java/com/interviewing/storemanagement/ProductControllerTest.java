@@ -34,6 +34,10 @@ class ProductControllerTest {
                 .put("quantity", 10);
     }
 
+    /**
+     * Unit test used to create a product in the database, we pass an admin user with ADMIN role, this way we should
+     * get the intended result.
+     */
     @Test
     void testCreate() {
         ResponseEntity<String> response = testRestTemplate
@@ -49,6 +53,9 @@ class ProductControllerTest {
         getCreatedId = Integer.parseInt(created.substring(created.indexOf(":") + 1, created.indexOf("\"name\"") - 1));
     }
 
+    /**
+     * Unit test that verify a request with no auth.
+     */
     @Test
     void testCreateNoAuth() {
         ResponseEntity<String> response = testRestTemplate.postForEntity(
@@ -60,6 +67,10 @@ class ProductControllerTest {
         assert response.getStatusCode().is4xxClientError();
     }
 
+    /**
+     * Unit test that checks if we get at 4xx response code in case an user with the USER role tries to make a POST
+     * request.
+     */
     @Test
     void testCreateUser() {
         ResponseEntity<String> response = testRestTemplate.withBasicAuth("user", "user")
@@ -72,6 +83,9 @@ class ProductControllerTest {
         assert response.getStatusCode().is4xxClientError();
     }
 
+    /**
+     * We test the request to get the product by id, this can be used by an user with USER role too.
+     */
     @Test
     void testGetOneEntryById() {
         ResponseEntity<String> response = testRestTemplate.withBasicAuth("user", "user")
@@ -84,6 +98,11 @@ class ProductControllerTest {
         assertNotNull(response.getBody());
     }
 
+    /**
+     * We test the request to update the details of a specific product identified by id in the database.
+     *
+     * @throws JsonProcessingException
+     */
     @Test
     void testUpdate() throws JsonProcessingException {
         String updated = created.replace("macbook", "lenovo");
