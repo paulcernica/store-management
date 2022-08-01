@@ -20,8 +20,8 @@ class ProductControllerTest {
 
     private static final String PRODUCT_PATH = "/product";
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    String created;
-    Integer getCreatedId;
+    private String created;
+    private Integer getCreatedId;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -36,24 +36,51 @@ class ProductControllerTest {
 
     @Test
     void testCreate() {
-        ResponseEntity<String> response = testRestTemplate.postForEntity(
+        ResponseEntity<String> response = testRestTemplate
+                .withBasicAuth("admin", "admin").postForEntity(
                 PRODUCT_PATH,
                 product(),
                 String.class
         );
 
+        assert response.getStatusCode().is2xxSuccessful();
         assertNotNull(response.getBody());
         created = response.getBody();
         getCreatedId = Integer.parseInt(created.substring(created.indexOf(":") + 1, created.indexOf("\"name\"") - 1));
     }
 
     @Test
-    void testGetOneEntryById() {
-        ResponseEntity<String> response = testRestTemplate.getForEntity(
-                PRODUCT_PATH.concat("/" + getCreatedId.toString()),
+    void testCreateNoAuth() {
+        ResponseEntity<String> response = testRestTemplate.postForEntity(
+                PRODUCT_PATH,
+                product(),
                 String.class
         );
 
+        assert response.getStatusCode().is4xxClientError();
+    }
+
+    @Test
+    void testCreateUser() {
+        ResponseEntity<String> response = testRestTemplate.withBasicAuth("user", "user")
+                .postForEntity(
+                PRODUCT_PATH,
+                product(),
+                String.class
+        );
+
+        assert response.getStatusCode().is4xxClientError();
+    }
+
+    @Test
+    void testGetOneEntryById() {
+        ResponseEntity<String> response = testRestTemplate.withBasicAuth("user", "user")
+                .getForEntity(
+                PRODUCT_PATH.concat("/" + getCreatedId),
+                String.class
+        );
+
+        assert response.getStatusCode().is2xxSuccessful();
         assertNotNull(response.getBody());
     }
 
@@ -61,16 +88,19 @@ class ProductControllerTest {
     void testUpdate() throws JsonProcessingException {
         String updated = created.replace("macbook", "lenovo");
         JsonNode jsonNode = MAPPER.readTree(updated);
-        testRestTemplate.put(
+        testRestTemplate.withBasicAuth("admin", "admin").put(
                 PRODUCT_PATH.concat("/").concat(jsonNode.get("id").asText()),
                 jsonNode,
                 String.class
         );
 
-        ResponseEntity<String> response = testRestTemplate.getForEntity(
-                PRODUCT_PATH.concat("/" + getCreatedId.toString()),
+        ResponseEntity<String> response = testRestTemplate.withBasicAuth("admin", "admin")
+                .getForEntity(
+                PRODUCT_PATH.concat("/" + getCreatedId),
                 String.class
         );
+
+        assert response.getStatusCode().is2xxSuccessful();
         assertNotNull(created);
         assertNotNull(response.getBody());
         assert !response.getBody().equals(created);
